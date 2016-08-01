@@ -10,7 +10,7 @@ from django.contrib.auth.hashers import (BCryptPasswordHasher,
                                          BasePasswordHasher, mask_hash)
 from django.utils.crypto import constant_time_compare
 from django.utils.encoding import smart_str
-from django.utils.datastructures import SortedDict
+from collections import OrderedDict
 
 log = logging.getLogger('common.hashers')
 
@@ -129,7 +129,7 @@ class SHA256PasswordHasher(BasePasswordHasher):
     def safe_summary(self, encoded):
         algorithm, salt, hash = encoded.split('$', 2)
         assert algorithm == self.algorithm
-        return SortedDict([
+        return OrderedDict([
             ('algorithm', algorithm),
             ('salt', mask_hash(salt, show=2)),
             ('hash', mask_hash(hash)),
